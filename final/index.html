@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+<title>CS194-26 Fall 2017 Project 3</title>
+<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+</head>
+
+<body>
+
+<h1>
+	CS194-26 FINAL PROJECT <br>
+	Fake Miniatures & Vertigo Shot
+</h1>
+
+<h2> FAKE MINIATURES </h2>
+
+<h3>OVERVIEW </h3>
+<p> We create fake miniatures by simulating the effect of selective focus cameras (Tilt Shift), effectively narrowing the depth of field to create the illusion of being extremely close to the subject.</p>
+<br>
+
+
+
+<h3>ALGORITHM</h3>
+<p> We choose a focus line via user input, and define a rectangular depth of field 40 pixels above and below this line. Using a mask to select the region of the photo that we want to blur, we apply the Gaussian filter to our image using our blurred mask to weight the pixel values from the original and the blurred images. We repeat these steps, progressively increasing the size of the mask and the sigma value for our Gaussian filter. This will increase the amount of blur as we move away from the focus line. To increase the 'miniature' effect, I decided to increase the saturation levels of the images. Here are the original and 'miniaturized' photos side by side! (Original images from Google/Wikipedia)</p>
+
+	<div class="img">
+		<img class="small-img" src="assets/img/city.jpg">
+		<img class="small-img" src="assets/img/city_blur.jpg">
+	</div>
+	<div class="img">
+		<img class="small-img" src="assets/img/rome.jpg">
+		<img class="small-img" src="assets/img/rome_blur.jpg">
+	</div>
+	<div class="img">
+		<img class="small-img" src="assets/img/japan.jpg">
+		<img class="small-img" src="assets/img/japan_blur.jpg">
+	</div>
+	<div class="img">
+		<img class="small-img" src="assets/img/buildings.jpg">
+		<img class="small-img" src="assets/img/buildings_blur.jpg">
+	</div>
+	<div class="img">
+		<img class="large-img" src="assets/img/zoo.jpg">
+		<img class="large-img" src="assets/img/zoo_blur.jpg">
+	</div>
+
+	<p> And here are a couple miniatures from my own photography collection. As you can see, they don't work quite as well because the angle that the photos were taken from isn't high up enough for it to really seem like a miniature.</p>
+	<div class="img">
+		<img class="large-img" src="assets/img/beach.jpg">
+		<img class="large-img" src="assets/img/beach_blur.jpg">
+	</div>
+	<div class="container">
+		<img class="large-img" src="assets/img/sky.jpg">
+		<img class="large-img" src="assets/img/sky_blur.jpg">
+	</div>
+
+<h2> VERTIGO SHOT </h2>
+
+<h3>OVERVIEW</h3>
+<p> In this project, we attempt to replicate the 'Dolly Zoom' effect, also known as the Vertigo Shot. We do this by taking a sequence of photos of a single subject, backing away from the subject but increasing the zoom each time so as to keep the subject centered and a constant size throughout the sequence. I used a Canon Rebel XT DSLR camera and chose objects around my apartment. I found that the most difficult part was to keep the object centered and in the same position. I think this would have been easier with a tripod, but I did not have access to one. I think the Dolly Zoom effect is best seen with images where there are objects in the background, because this emphasizes the changing background which contrasts with the constant foreground subject. </p><br>
+<p style="text-align: center;"><strong> GLASS CUP </strong></p>
+<div class="img">
+	<img class="tiny-img" src="assets/img/1.jpg">
+	<img class="tiny-img" src="assets/img/2.jpg">
+	<img class="tiny-img" src="assets/img/3.jpg">
+	<img class="tiny-img" src="assets/img/4.jpg">
+	<img class="tiny-img" src="assets/img/5.jpg">
+	<img class="tiny-img" src="assets/img/6.jpg">
+</div><br>
+
+<p style="text-align: center;"><strong> UMBRELLA COVER </strong></p>
+<div class="container">
+	<img class="tiny-img" src="assets/img/21.jpg">
+	<img class="tiny-img" src="assets/img/22.jpg">
+	<img class="tiny-img" src="assets/img/23.jpg">
+	<img class="tiny-img" src="assets/img/24.jpg">
+	<img class="tiny-img" src="assets/img/25.jpg">
+	<img class="tiny-img" src="assets/img/26.jpg">
+</div>
+
+
+
+<h3>BELLS & WHISTLES</h3>
+<p> I combined the JPG files from above to create an animated GIF. This lets us see the zoom effect more clearly!</p>
+<div class="img">
+	<img class="large-img" src="assets/img/cup.gif">
+	<img class="large-img" src="assets/img/umbrella.gif">
+</div>
+
+
+<p> I also experimented with different combinations of movement to see what would happen. In the first sequence of images, I tried starting far away from the subject with a high zoom, and gradually moving closer while zooming out. In the second, I tried slightly moving the perspective of the camera such that the subject (the plate) remained centered, but each image shows it from a slightly different angle.</p>
+ <div class="container">
+	<img class="large-img" src="assets/img/bottle.gif">
+	<img class="large-img" src="assets/img/plate.gif">
+</div>
+
+<h3>FINAL REMARKS</h3>
+<p> Thanks for a great class! Some of the projects were quite difficult and and frustrating, but the concepts were really interesting and now I know a lot more about how programs like Photoshop work. </p>
+
+</body>
+</html>
