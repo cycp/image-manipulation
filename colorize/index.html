@@ -1,0 +1,255 @@
+
+<!DOCTYPE HTML>
+<html>
+
+<head>
+<title>CS194-26 Fall 2017 Project 1</title>
+<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+</head>
+
+<body>
+
+<h1>
+	CS194-26 Project #1 <br>
+	Colorizing the Prokudin-Gorskii Photo Collection
+</h1>
+
+<h3>OVERVIEW </h3>
+<p>Sergei Mikhailovich Prokudin-Gorskii had a clever idea. He decided to photograph everything he saw in three exposures using a red, green, and blue filter. Even though there was no color photography at the time, his glass plate negatives survived and we are now able to use them to produce colorized images from the past. </p>
+<p> Goal: Take the Prokudin-Gorskii glass plate images and colorize them via image processing.<br>
+	How: Divide each digitized glass plate scan into three color channels (R, G, and B). Properly align them on top of each other to get the colored result! </p><br>
+
+
+
+<h3>NAIVE ALGORITHM</h3>
+<p>I used a simple sum of squared differences (SSD) algorithm to find the best alignment over a [-15, 15] window. The best (x, y) displacement value will be the one that minimizes the SSD value. I ignored the outer 10% of each image and instead chose to consider just the inner portion to avoid having the borders throw off the alignment calculations.Initially, I used the B channel as the reference to align the R and G channels, but realized this resulted in a slight discrepancy for emir.tif. After playing around a bit, I realized that using the G channel as the reference worked better (possibly because of the abundance of blue in the photo). Changing the reference channel didn't seem to affect the alignment of any of the other images. This algorithm worked well for the smaller jpg images, but it proved to be much too inefficient to process the bigger tif images quickly enough. Below are the resulting images: </p>
+
+
+<div class="img">
+	<strong>Cathedral</strong><br>
+	B: (-5, -2) <br>
+	R: (7, 1)<br>
+<!-- 	G: (5, 2) <br>
+	R: (12, 3)<br> -->
+	<img class="small-img" src="assets/img/Bref-cathedral.jpg"> 
+</div>
+
+<div class="img">
+	<strong>Monastery</strong><br>
+	B: (3, -2) <br>
+	R: (6, 1)<br>
+<!-- 	G: (-3, 2) <br>
+	R: (3, 2)<br> -->
+	<img class="small-img" src="assets/img/Bref-monastery.jpg">
+</div>
+
+<div class="img">
+	<strong>Nativity</strong><br>
+	B: (-3, -1) <br>
+	R: (4, -1)<br>
+<!-- 	G: (3, 1) <br>
+	R: (7, 0)<br> -->
+	<img class="small-img" src="assets/img/Bref-nativity.jpg">
+</div>
+
+<div class="img" style="margin-bottom: 40px">
+	<strong>Settlers</strong><br>
+	B: (-7, 0) <br>
+	R: (8, -1)<br>
+<!-- 	G: (7, 0) <br>
+	R: (14, -1)<br> -->
+	<img class="small-img" src="assets/img/Bref-settlers.jpg">
+</div>
+<br>
+
+
+<h3>IMAGE PYRAMID</h3>
+<p> I needed a much more efficient way to align the bigger images, which contained way more pixels than the jpg images used above. I used the image pyramid recursive approach to halve the size of the image until it was a more manageable size, then find the proper displacement at that level using the SSD algorithm mentioned above. This resulting displacement is multiplied by two each time it is scaled back up a level. We search over a window around this doubled displacement to make any adjustments, repeating this until it returns to its original size, each time finding an updated and more precise displacement for each channel. I manually found that a good window to search for the displacement when scaling back up was 7. <br>Here are the results for the larger tif images: </p>
+<div style="text-align:center; margin-bottom: -40px">
+	<div class="img">
+		<strong>Emir</strong><br>
+		B: (-48, -24) <br>
+		R: (56, 18)<br>
+		<img class="large-img" src="assets/img/result-emir.jpg">
+	</div>
+	<div class="img">
+		<strong>Emir (B as reference)</strong><br>
+		G: (48, 24) <br>
+		R: (102, 54)<br>
+		<img class="large-img" src="assets/img/Bref-result-emir.jpg">
+	</div>
+</div>
+<p>
+*Note: When I place the image obtained from using G as the reference channel (left) next to the image obtained when using B as the reference (right), it is clear that using G as the reference channel results in a clearer and better aligned image!</p><br>
+
+<div class="img">
+	<strong>Harvesters</strong><br>
+	B: (-60, -16) <br>
+	R: (64, -2)<br>
+	<img class="large-img" src="assets/img/result-harvesters.jpg">
+</div>
+
+<div class="img">
+	<strong>Icon</strong><br>
+	B: (-40, -16) <br>
+	R: (48, 6)<br>
+	<img class="large-img" src="assets/img/result-icon.jpg">
+</div>
+
+<div class="img">
+	<strong>Lady</strong><br>
+	B: (-50, -8) <br>
+	R: (62, 4)<br>
+	<img class="large-img" src="assets/img/result-lady.jpg">
+</div>
+
+<div class="img">
+	<strong>Self Portrait</strong><br>
+	B: (-78, -28) <br>
+	R: (98, 8)<br>
+	<img class="large-img" src="assets/img/result-self_portrait.jpg">
+</div>
+
+<div class="img">
+	<strong>Three Generations</strong><br>
+	B: (-54, -14)<br>
+	R: (58, -2)<br>
+	<img class="large-img" src="assets/img/result-three_generations.jpg">
+</div>
+
+<div class="img">
+	<strong>Train</strong><br>
+	B: (-42, -4)<br>
+	R: (44, 26)<br>
+	<img class="large-img" src="assets/img/result-train.jpg">
+</div>
+
+<div class="img">
+	<strong>Turkmen</strong><br>
+	B: (-56, -20)<br>
+	R: (60, 8)<br>
+	<img class="large-img" src="assets/img/result-turkmen.jpg">
+</div>
+
+<div class="img">
+	<strong>Village</strong><br>
+	B: (-64, -12)<br>
+	R: (72, 10)<br>
+	<img class="large-img" src="assets/img/result-village.jpg">
+</div>
+
+<p style="margin-top: -10px">And results from a few other photos that I chose from the collection:</p>
+<div class="img">
+	<strong>Austrian Prisoners</strong><br>
+	B: (-3, -1)<br>
+	R: (9, 1)<br>
+	<img class="small-img" src="assets/img/cropped-austrianprisoners.jpg">
+</div>
+
+<div class="img">
+	<strong>Barracks</strong><br>
+	B: (-4, -1)<br>
+	R: (10, 1)<br>
+	<img class="small-img" src="assets/img/cropped-barracks.jpg">
+</div>
+
+<div class="img">
+	<strong>Naziya</strong><br>
+	B: (-1, 0)<br>
+	R: (2, 0)<br>
+	<img class="small-img" src="assets/img/cropped-naziya.jpg">
+</div>
+
+<div class="img" style="margin-bottom: 40px">
+	<strong>Tracks</strong><br>
+	B: (-28, -6)<br>
+	R: (78, 4)<br>
+	<img class="small-img" src="assets/img/cropped-tracks.jpg">
+</div>
+
+
+<h3>BELLS & WHISTLES</h3>
+	<h3 style="margin-bottom:0px">Automatic Cropping</h3>
+	Instead of just cropping a predefined margin off of the borders, I tried to detect the actual borders and crop accordingly. I used edge detection on each of the channels on the outer 10% of the image and then averaged out the calculated pixel values for each row/column. If the average was above a certain threshold for any of the channels, that region would be cropped from the final image. I found that a good threshold was 0.1 because this minimized the discolored borders while still maintaining most of the image. However, this threshold can be changed depending on how extreme of a cropping you would want. I decided to go with Sobel edge detection because the Canny method seemed to be a bit too sensitive and crop too much of the edges off. <br>Here is a comparison of the two methods:
+	<div style='text-align:center'>
+		<div class="img" style="text-align:center">
+			<strong>Before Cropping </strong><br>
+			<img class="small-img" src="assets/img/result-settlers.jpg">
+		</div> 
+		<div class="img" style="padding: 20px">
+			<strong>Sobel Method</strong><br>
+		<img class="small-img" src="assets/img/Bref-cropped-sobel-settlers.jpg">
+		</div>
+
+		<div class="img">
+			<strong>Canny Method</strong><br>
+		<img class="small-img" src="assets/img/Bref-cropped-canny-settlers.jpg">
+		</div>
+	</div>
+
+	As you can see, the cropped image using Canny edge detection crops off a significantly larger portion on the left of the image, likely due to the sharp pink edge.
+	Here is a comparison of predefined margin croppings vs. automatic cropping:<br>
+	<div style='text-align:center'>
+		<div class="img" style="text-align:center">
+			<strong>Cropping outer 10% of image: Settlers</strong><br>
+			<img class="small-img" src="assets/img/manual-cropped-settlers.jpg">
+		</div> 
+		<div class="img" style="padding: 20px">
+			<strong>Auto Crop. Much better!</strong><br>
+		<img class="small-img" src="assets/img/Bref-cropped-sobel-settlers.jpg">
+		</div>
+	</div>
+
+
+<h3>Automatic Contrast</h3>
+	Sometimes, an image may appear dull and gray due to lack of contrast. This happens when the image intensities do not occupy the full range [0,1] and instead lie somewhere in the middle. Thus, to fix this I rescaled the intensities of the image so that the minimum intensity is at 0 and the maximum intensity is at 1:<br>
+	<div style="text-align:center; margin-top: 30px">
+		<div class="img" style="text-align:center">
+			<strong>Before:</strong><br>
+			<img style="margin-top: -10px" class="small-img" src="assets/img/histbefore.jpg">
+		</div>
+		<div class="img" style="text-align:center">
+			<strong>After rescaling (min/max intensities are at 0 and 1):</strong><br>
+			<img style="margin-top: -10px" class="small-img" src="assets/img/histafter.jpg">
+		</div>
+	</div>
+	<br><br>
+	<div style='text-align:center'>
+		<div class="img" style="text-align:center">
+			<strong>Lady: Before</strong><br>
+			<img class="large-img" src="assets/img/cropped-lady.jpg">
+		</div> 
+		<div class="img" >
+			<strong>Lady: After</strong><br>
+		<img class="large-img" src="assets/img/contrast-lady.jpg">
+		</div>
+	</div>
+
+	<div style='text-align:center'>
+		<div class="img" style="text-align:center">
+			<strong>Three Generations: Before</strong><br>
+			<img class="large-img" src="assets/img/cropped-three_generations.jpg">
+		</div> 
+		<div class="img" >
+			<strong>Three Generations: After</strong><br>
+		<img class="large-img" src="assets/img/contrast-three_generations.jpg">
+		</div>
+	</div>
+
+	<div style='text-align:center'>
+		<div class="img" style="text-align:center">
+			<strong>Icon: Before</strong><br>
+			<img class="large-img" src="assets/img/cropped-icon.jpg">
+		</div> 
+		<div class="img" >
+			<strong>Icon: After</strong><br>
+		<img class="large-img" src="assets/img/contrast-icon.jpg">
+		</div>
+	</div>
+
+	Overall, the images seem sharper, more saturated, and more defined.
+
+
+</body>
+</html>

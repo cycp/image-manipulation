@@ -1,0 +1,36 @@
+% CS194-26 (cs219-26): Project 1, starter Matlab code
+
+% name of the input file
+imname = 'cathedral.jpg';
+
+% read in the image
+fullim = imread(imname);
+
+% convert to double matrix (might want to do this later on to same memory)
+fullim = im2double(fullim);
+
+% compute the height of each part (just 1/3 of total)
+height = floor(size(fullim,1)/3);
+% separate color channels
+B = fullim(1:height,:);
+G = fullim(height+1:height*2,:);
+R = fullim(height*2+1:height*3,:);
+
+% Align the images
+% Functions that might be useful to you for aligning the images include: 
+% "circshift", "sum", and "imresize" (for multiscale)
+aG = align(G,B,15);
+aR = align(R,B,15);
+%%%%%aG = align(G,B);
+%%%%%aR = align(R,B);
+
+
+% open figure
+figure(1);
+
+% create a color image (3D array)
+colorim = cat(3,B,aG,aR);
+% show the resulting image
+imshow(overlay);
+% save result image
+%% imwrite(colorim,['result-' imname],'jpg');

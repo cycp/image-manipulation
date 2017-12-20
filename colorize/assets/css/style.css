@@ -1,0 +1,26 @@
+body {
+	font-family: 'Lato', sans-serif;
+	padding: 20px 50px 20px 50px;
+}
+
+h1, h2 {
+	text-align: center;
+
+}
+
+
+.small-img {
+	height: 285px;
+	padding-top: 10px;
+}
+
+.img {
+	display: inline-block;
+	text-align: center;
+}
+
+.large-img {
+	height: 370px;
+	padding-top: 10px;
+	padding-bottom: 40px
+}
