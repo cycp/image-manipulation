@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>CS194-26 Fall 2017 Project 4</title>
+		<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+		<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+	</head>
+
+	<body>
+
+	<h1>
+		CS194-26 Project #5 <br>
+		Lightfield Camera: Depth Refocusing and Aperture Adjustment
+	</h1>
+
+
+	<h3> OVERVIEW </h3>
+	<p> In this project we demonstrate how capturing multiple images over a plane can lead to cool post-processing effects like depth refocusing and aperture adjustment. We show how this works by using image datasets from the Stanford Light Archive to demonstrate that we can achieve these effects simply with a few operations! </p> <br>
+
+	<h3> DEPTH REFOCUSING </h3>
+	<p> By shifting and averaging the various data, we can achieve a refocusing effect. With no shifting, the focus is on the far-away objects. The center image is set to be at position (8, 8) and we shift each of the other images to be aligned with this center image. By increasing the shifting factor, we can alter the focus portion so that the closer objects and sharper instead. The results are shown below: </p>
+
+	<div class="container">
+		<img class="large-img" src="assets/img/depth.gif"><br>
+		<div class="img" style="padding-right: 60px">
+			<strong> scale = 0 </strong><br>
+			<img class="small-img" src="assets/img/refocused_0.jpg">
+		</div>
+		<div class="img" style="padding-right: 60px; margin-bottom: 40px">
+			<strong> scale = 1 </strong><br>
+			<img class="small-img" src="assets/img/refocused_1.jpg">
+		</div>
+		<div class="img" style="padding-right: 60px">
+			<strong> scale = 2 </strong><br>
+			<img class="small-img" src="assets/img/refocused_2.jpg">
+		</div>
+		<div class="img" style="padding-right: 60px">
+			<strong> scale = 3 </strong><br>
+			<img class="small-img" src="assets/img/refocused_3.jpg">
+		</div>
+	</div>
+
+	<h3> APERTURE ADJUSTMENT </h3>
+	<p> To adjust the aperture, we can use a similar process as from above, except we only average a subset of the images given. For example, using only the center (8, 8) image (aperture = 0) would give us a clear image, similar to a pinhole camera, As we increase the aperture, we are using more images, causing a smaller range of the photo to appear in focus. For example, if our aperture is 2, then we use all the images within 2 coordinates of the center (8, 8). Below are the results from the portion of the project: </p>
+
+	<div class="container">
+		<img class="large-img" src="assets/img/aperture.gif"><br>
+		<div class="img" style="padding-right: 60px">
+			<strong> aperture radius = 0 </strong><br>
+			<img class="small-img" src="assets/img/adjusted_0.jpg">
+		</div>
+		<div class="img" style="padding-right: 60px; margin-bottom: 40px">
+			<strong> aperture radius = 1 </strong><br>
+			<img class="small-img" src="assets/img/adjusted_1.jpg">
+		</div>
+		<div class="img" style="padding-right: 60px">
+			<strong> aperture radius = 2 </strong><br>
+			<img class="small-img" src="assets/img/adjusted_2.jpg">
+		</div>
+		<div class="img" style="padding-right: 60px; margin-bottom: 30px">
+			<strong> aperture radius = 3 </strong><br>
+			<img class="small-img" src="assets/img/adjusted_3.jpg">
+		</div>
+				<div class="img" style="padding-right: 60px">
+			<strong> aperture radius = 4 </strong><br>
+			<img class="small-img" src="assets/img/adjusted_4.jpg">
+		</div>
+		<div class="img" style="padding-right: 60px; margin-bottom: 30px">
+			<strong> aperture radius = 5 </strong><br>
+			<img class="small-img" src="assets/img/adjusted_5.jpg">
+		</div>
+		<div class="img" style="padding-right: 60px">
+			<strong> aperture radius = 6 </strong><br>
+			<img class="small-img" src="assets/img/adjusted_6.jpg">
+		</div>
+		<div class="img" style="padding-right: 60px; margin-bottom: 30px">
+			<strong> aperture radius = 7 </strong><br>
+			<img class="small-img" src="assets/img/adjusted_7.jpg">
+		</div>
+		<div class="img" style="padding-right: 60px">
+			<strong> aperture radius = 8 </strong><br>
+			<img class="small-img" src="assets/img/adjusted_8.jpg">
+		</div>
+	</div>
+
+</html>
