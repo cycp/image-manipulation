@@ -1,0 +1,322 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+<title>CS194-26 Fall 2017 Project 3</title>
+<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+</head>
+
+<body>
+
+<h1>
+	CS194-26 Project #3 <br>
+	Fun With Frequencies!
+</h1>
+
+<h2> PART 1: FREQUENCY DOMAIN </h2>
+
+<h3>OVERVIEW </h3>
+<p>We use high pass and low pass filters to extract various parts of an image and use that information to create interesting combinations.</p>
+<br>
+
+
+
+<h3>PART 1.1: IMAGE SHARPENING WARMUP</h3>
+<p>Image sharpening is a basic of photo editing. But if we were to do it ourselves without the help of any photo editing program, how would 
+we do this? The key is to use the formula <code>img + &alpha; * highpass(img)</code>,
+      where <code>highpass(img)</code> is the high pass version of our original image, obtained by subtracting the low pass Gaussian version from the original image. 
+  </p>
+  <div class="container">
+  	<div class="img">
+  		<strong>Original Image </strong><br>
+        <img class="small-img" src="assets/img/turtle.jpg">
+	</div>
+  	<div class="img">
+  		<strong>&alpha; = 0.5; &sigma; = 2</strong><br>
+	    <img class="small-img" src="assets/img/sharpened-0.5turtle.jpg">
+	</div>
+  	<div class="img">
+  		<strong>&alpha; = 1; &sigma; = 2</strong><br>
+	    <img class="small-img" src="assets/img/sharpened-1turtle.jpg">
+	</div>
+	<div class="img">
+		<strong>&alpha; = 2; &sigma; = 2</strong><br>
+        <img class="small-img" src="assets/img/sharpened-2turtle.jpg">
+    </div>
+    <div class="img">
+    	<strong>&alpha; = 4; &sigma; = 2</strong><br>
+        <img class="small-img" src="assets/img/sharpened-4turtle.jpg">
+    </div>
+    <div class="img">
+    	<strong>&alpha; = 6; &sigma; = 2</strong><br>
+        <img class="small-img" src="assets/img/sharpened-6turtle.jpg">
+    </div><br>
+    <p>Even the barely noticeable watermark from the original image is clearly there when sharpened!</p>
+
+ </div>
+
+
+<h3>PART 1.2: HYBRID IMAGES</h3>
+<p>Using high pass and low pass filters to our advantage, we can create combinations of photos that change in appearance as a function of viewing distance. So when viewed up close, an image may look like one thing, but when viewed from afar, its appearance changes! This works because at shorter distances, high frequency dominates while at longer distances, low frequency dominates. </p>
+
+<h3> Christian Bale & Batman </h3>
+<div class="container">
+	<img class="small-img" src="assets/img/bale.jpg">
+	<img class="small-img" src="assets/img/batman.jpg">
+	<img class="small-img" src="assets/img/baleman.jpg">
+</div>
+
+<h3> Frequency Analysis </h3>
+<div class="container">
+	<div class="img">
+		<strong>Input: Christian Bale </strong><br>
+		<img class="six" src="assets/img/balefft.png">
+	</div>
+	<div class="img">
+		<strong>Input: Batman </strong><br>
+		<img class="six" src="assets/img/batmanfft.png">
+	</div>
+	<div class="img">
+		<strong>Low-pass Filter </strong><br>
+		<img class="six" src="assets/img/balelowpass.png">
+	</div>
+	<div class="img">
+		<strong>High-pass Filter</strong><br>
+		<img class="six" src="assets/img/highpass.png">
+	</div>
+	<div class="img">
+		<strong>Result</strong><br>
+		<img class="six" src="assets/img/result.png">
+	</div>
+</div>
+
+
+
+
+<h3> Sun & Moon Emoji </h3>
+<div class="container">
+	<img class="small-img" src="assets/img/moon.png"> 
+	<img class="small-img" src="assets/img/sun.png"> 
+	<img class="small-img" src="assets/img/emoji.jpg">
+</div>
+
+
+<h3> Mercury & Earth </h3>
+<div class="container">
+	<img class="small-img" src="assets/img/mercury.jpg">
+	<img class="small-img" src="assets/img/earth.jpg">
+	<img class="small-img" src="assets/img/planet.jpg">
+</div>
+
+<h3> Failure: BananaPhone </h3>
+<div class="container">
+	<img style="height: 215px; padding-top: 10px;" src="assets/img/banana.jpg">
+	<img style="height: 215px; padding-top: 10px;" src="assets/img/phone.jpg">
+	<img style="height: 215px; padding-top: 10px;" src="assets/img/bananaphone.png">
+<p> This doesn't really work because the banana is so different in shape/composition from the telephone photo. </p>
+
+</div>
+
+
+
+<h3>PART 1.3: GAUSSIAN AND LAPLACIAN STACKS</h3>
+<h3> Salvador Dali</h3>
+<div style="text-align:center">
+	<strong>Original </strong><br>
+	<img class="large-img" src="assets/img/dali.jpg">
+</div>
+
+<p> Gaussian Stack</p>
+<div style="text-align:center">
+	<div class="img">
+		<strong>Level 1: &sigma; = 1  </strong><br>
+		<img class="six" src="assets/img/daligauss1.jpg">
+	</div>
+	<div class="img">
+		<strong>Level 2: &sigma; = 2  </strong><br>
+		<img class="six" src="assets/img/daligauss2.jpg">
+	</div>
+	<div class="img">
+		<strong>Level 3: &sigma; = 4  </strong><br>
+		<img class="six" src="assets/img/daligauss3.jpg">
+	</div>
+	<div class="img">
+		<strong>Level 4: &sigma; = 8  </strong><br>
+		<img class="six" src="assets/img/daligauss4.jpg">
+	</div>
+	<div class="img">
+		<strong>Level 5: &sigma; = 16  </strong><br>
+		<img class="six" src="assets/img/daligauss5.jpg">
+	</div>
+</div>
+	
+
+<p> Laplacian Stack</p>
+<div class="container">
+	<div class="img">
+		<strong>Level 1 </strong><br>
+		<img class="six" src="assets/img/dalilap1.jpg">
+	</div>
+	<div class="img">
+		<strong>Level 2 </strong><br>
+		<img class="six" src="assets/img/dalilap2.jpg">
+	</div>
+	<div class="img">
+		<strong>Level 3 </strong><br>
+		<img class="six" src="assets/img/dalilap3.jpg">
+	</div>
+	<div class="img">
+		<strong>Level 4 </strong><br>
+		<img class="six" src="assets/img/dalilap4.jpg">
+	</div>
+	<div class="img">
+		<strong>Level 5 </strong><br>
+		<img class="six" src="assets/img/dalilap5.jpg">
+	</div>
+</div>
+
+
+<h3>PART 1.4: MULTIRESOLUTION BLENDING</h3>
+
+<div class="container">
+	<div class="img" style="padding-right: 30px">
+		<strong>Class Example </strong><br>
+		<img class="small-img" src="assets/img/orapple.jpg">
+	</div>
+
+	<div class="img" style="padding-right: 30px">
+		<strong>Alexei Efros, King of the Galaxy </strong><br>
+		<img class="small-img" src="assets/img/efrosgalaxy2.jpg">
+	</div>
+
+	<div class="img" style="padding-right: 30px">
+		<strong>Jun-Yan the Orange </strong><br>
+		<img class="small-img" src="assets/img/jyorange.jpg">
+	</div>	
+</div>
+
+
+<h2> PART 2: GRADIENT DOMAIN FUSION </h2>
+
+<h3>OVERVIEW </h3>
+<p>Previously, with multiresolution blending, we used Laplacian stacks to blend the images together. In this portion of the project, we focus on Poisson Blending and how we can use it to seamlessly blend parts of images together. Using the source and target images, we find values for the target pixels that preserve the source image's gradient as much as possible. We choose to ignore intensity and prioritize gradient values since that is what people tend to notice more. We do this by taking into account a pixel as well as its four neighbors. This will create a resulting image that looks as natural as possible.
+</p>
+<br>
+
+<h3>PART 2.1: TOY PROBLEM</h3>
+<div style="margin-bottom: 50px;">
+	<p> Here is the result of the toy problem: </p>
+	<img style="height: 160px" src="assets/img/toy_problem.png"> 
+</div>
+
+<h3>PART 2.2: POISSON BLENDING</h3>
+
+
+<h3> UFO </h3>
+<div style="text-align: center">
+	<div class="img" style="padding-bottom: 60px">
+		<strong>Source Image: UFO</strong><br>
+		<img class="small-img" src="assets/img/ufo.jpg">
+	</div>
+	<div class="img">
+		<strong>Target Image: City</strong><br>
+		<img class="small-img" src="assets/img/city.jpg">
+	</div>
+	<div class="img">
+		<strong>Source pixels copied into target image</strong><br>
+		<img class="small-img" src="assets/img/ufo1.jpg">
+	</div>
+	<div class="img">
+		<strong>Final</strong><br>
+		<img class="small-img" src="assets/img/ufo2.jpg">
+	</div>
+</div>
+
+<h4> How does it work? <h4> 
+	<p>I set up a least squares problem to solve for the appropriate pixel values. I solve for each RGB channel separately. In order to maximize efficiency, I find the pixels that we actually care about (the ones where the value in the mask is not 0). These are the variables we need to solve for, because the rest of them are just copied directly from the background. Using a sparse matrix for A also made the algorithm a lot more efficient. After solving, I clamp all the negative values to ensure a valid result. </p>
+
+
+<h3> Plane in the Sky </h3>
+<div class="container">
+	<div class="img" style="padding-bottom: 60px">
+		<strong>Source Image: Plane</strong><br>
+		<img class="small-img" src="assets/img/plane.jpg">
+	</div>
+	<div class="img">
+		<strong>Target Image: Sky</strong><br>
+		<img class="small-img" src="assets/img/sky.jpeg">
+	</div>
+	<div class="img">
+		<strong>Source pixels copied into target image</strong><br>
+		<img class="small-img" src="assets/img/sky1.jpg">
+	</div>
+	<div class="img">
+		<strong>Final</strong><br>
+		<img class="small-img" src="assets/img/sky2.jpg">
+	</div>
+</div>
+
+
+
+
+<h3> Failure: Slenderman in the Forest </h3>
+<div style="text-align: center">
+	<div class="img" style="padding-bottom: 60px">
+		<strong>Source Image: Slenderman</strong><br>
+		<img class="small-img" src="assets/img/slenderman.jpg">
+	</div>
+	<div class="img" style="padding-bottom: 60px">
+		<strong>Target Image: Forest</strong><br>
+		<img class="small-img" src="assets/img/forest.jpg">
+	</div>
+	<div class="img">
+		<strong>Source pixels copied into target image</strong><br>
+		<img class="small-img" src="assets/img/slender1.jpg">
+	</div>
+	<div class="img">
+		<strong>Final</strong><br>
+		<img class="small-img" src="assets/img/slender2.jpg">
+	</div>
+</div>
+
+<p> This was a failure. As you can see, the coloring of Slenderman does not match the background image of the forest. Also, the gradients don't seem to match very well as you can still see the outline of the polygon drawn around the figure despite using the Poisson Blending algorithm. I think this problem occurred due to the nature of the background image chosen. The forest has a lot of branches and trees, which can get in the way of seamless blending because it is very obvious to the eye if part of a branch or tree disappears due to the blending algorithm. This is why this algorithm tends to work best with background images that are simple and don't have a lot of patterns that could be easily disrupted. </p><br><br>
+
+<h3> Efros, King of the Galaxy using Poisson Blending! </h3>
+<div class="container">
+	<div class="img" style="padding-right: 30px">
+		<strong>With Multiresolution Blending</strong><br>
+		<img style="height: 270px" src="assets/img/efrosgalaxy2.jpg">
+	</div>
+	<div class="img" style="padding-right: 30px">
+		<strong>With Poisson Blending</strong><br>
+		<img style="height: 270px" src="assets/img/efros2.jpg">
+	</div>
+	<div class="img" style="padding-right: 30px">
+		<strong>With Mixed Blend Gradient</strong><br>
+		<img style="height: 270px" src="assets/img/efrosmixedblend.jpg">
+	</div>
+
+<p> Poisson Blending works best in this case, in my opinion, because Efros looks like he is a part of the galaxy but you can still make out his face. Of course, in this case it is up to the viewer's preference - some may like the multiresolution blending version better because it is easier to distinguish him from the background. In general, multiresolution blending is better for cases when you want to distinguish more clearly between the two images you are blending, but still want a smooth seam. Poisson Blending is better for when you want to insert a part of another image into the background of another such that the inserted image looks like a part of the background. And Mixed Gradient blending is best when you want to put emphasis on the more prevalent image of the two that you are blending (in this case the galaxy is much more prominent).</p>
+</div>
+
+
+<h3>BELLS & WHISTLES: MIXED BLEND GRADIENT</h3>
+<p>Here is an example done with mixed blend gradient:</p>
+<div class="container">
+	<div class="img" style="padding-right: 30px; padding-bottom: 40px">
+		<strong>Writing</strong><br>
+		<img style="height: 300px" src="assets/img/behappy.jpg">
+	</div>
+	<div class="img" style="padding-right: 30px">
+		<strong>Clouds</strong><br>
+		<img style="height: 300px" src="assets/img/clouds.jpg">
+	</div>
+	<div class="img" style="padding-right: 30px">
+		<strong>Result</strong><br>
+		<img style="height: 300px" src="assets/img/happyclouds.jpg">
+	</div>
+</div>
+	
+</body>
+</html>

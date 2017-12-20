@@ -1,0 +1,47 @@
+body {
+	font-family: 'Lato', sans-serif;
+	padding: 20px 50px 20px 50px;
+}
+
+h1, h2 {
+	text-align: center;
+
+}
+
+.container {
+	text-align: center;
+	margin-bottom: 100px;
+}
+
+.centered {
+	text-align: center;
+}
+
+.six {
+	/*display: inline-block;*/
+	/*width: 16%;*/
+	width: 257px;
+
+}
+
+.tiny-img {
+	height: 243px;
+	padding-top: 10px;
+}
+
+.small-img {
+	height: 315px;
+	padding-top: 10px;
+}
+
+.img {
+	text-align: center;
+	display: inline-block;
+	/*text-align: center;*/
+}
+
+.large-img {
+	height: 370px;
+	padding-top: 10px;
+	padding-bottom: 40px
+}

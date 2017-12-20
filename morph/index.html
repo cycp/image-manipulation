@@ -1,0 +1,141 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+<title>CS194-26 Fall 2017 Project 4</title>
+<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+</head>
+
+<body>
+
+<h1>
+	CS194-26 Project #4 <br>
+	Face Morphing
+</h1>
+
+
+<h3>OVERVIEW </h3>
+<p>In this project we morph one face into another, find the mean of a population of faces and create caricatures of our own faces using affine warping and some linear algebra.</p>
+<br>
+
+
+
+<h3>DEFINING CORRESPONDENCES</h3>
+<p> The first step is to define a set of corresponding points on the two photos we want to morph into each other. I did this using <code>cpselect</code>. The key to choosing the right points is to select pairs of points that correspond to the same features on each image (e.g. jawline, nose, eyes, hairline). I had to go through a bit of trial and error here to see which areas needed more points to make the morph look more natural. For example, I realized the nose and eyes were very important because without well-selected points in those areas, the resulting midway morph would have slightly misaligned features.</p>
+
+<div class="container">
+	<img class="small-img" src="assets/img/annepts.jpg">
+	<img class="small-img" src="assets/img/annetri.jpg">
+	<img class="small-img" src="assets/img/amypts.jpg">
+	<img class="small-img" src="assets/img/amytri.jpg">
+</div>
+
+
+<h3>COMPUTING THE "MID-WAY FACE"</h3>
+<p>This brings us to our next step, finding this midway morph. To find this, we first take the average of both images' correspondence points and use the average points to find a Delaunay triangulization. Then, we do an inverse warp on each image to warp them both into the average shape and average the colors together. With our two warped images, we can simply cross-dissolve them together (in this case, using weights of .5 and .5 since we want the mid-way face). I realized the importance of adding in the corner coordinates to my matrix -- without the corner points, the resulting image has some artifacts/borders that you can see. </p>
+<div class="container">
+	<div class="img" style="padding-right: 60px">
+		<strong>No corners = bad! </strong><br>
+		<img class="large-img" src="assets/img/midway_nocorners.jpg">
+	</div>
+	<div class="img" style="padding-right: 60px">
+		<strong>Picking good correspondence points is also important...<br>(see the nostrils) </strong><br>
+		<img class="large-img" src="assets/img/midway_badpts.jpg">
+	</div>
+	<div class="img" style="padding-right: 60px">
+		<strong>Perfect!</strong><br>
+		<img class="large-img" src="assets/img/midway.jpg">
+	</div>
+</div>
+<p> The idea behind this algorithm is to compute the affine transformation for every corresponding pair of triangles in the two images so that we can map every pixel from the source image to the target image. We use the provided <code>mytsearch</code> function to find which pixels fall within which triangles. We then use this information for interpolation.
+<!-- <img src="assets/img/midway_nocorners.jpg">
+<img src="assets/img/midway.jpg">
+<img src="assets/img/midway.jpg"> -->
+
+
+
+<h3>THE MORPH SEQUENCE</h3>
+<p> Extending the concepts from the mid-way face, now we can completely morph one image into another by using various weights for image 1 and image 2. We do this repeatedly with evenly spaced <code>warp_frac, dissolve_frac</code> values for our frames in order to create a cool video morph! </p>
+
+<div class="container">
+	<img class="large-img" src="assets/img/anne_to_amy.gif">
+</div>
+
+<h3>THE MEAN FACE OF A POPULATION</h3>
+<p>Using the morphing function from above, we can generate the average face of an entire population! I used a subset of the <a href="http://www2.imm.dtu.dk/~aam/datasets/datasets.html">Danes</a> dataset. I used only the male faces in pose 1 (non-smiling) and discarded the images that had been corrupted to be only available in greyscale. I found the average shape of all of the faces and warped each individual face to match the geometry of this average face. Here are some examples of the individuals before and after morphing to the average geometry:
+<div style="text-align:center; margin-bottom: 50px">
+	<img class="small-img" src="assets/img/01-1m.jpg">
+	<img class="small-img" src="assets/img/morphedex_1.png"><br>
+	<img class="small-img" src="assets/img/06-1m.jpg">
+	<img class="small-img" src="assets/img/morphedex_2.png"><br>
+	<img class="small-img" src="assets/img/10-1m.jpg">
+	<img class="small-img" src="assets/img/morphedex_3.png">
+</div>
+<div style="text-align:center">
+	<p>Here is the resulting average face!</p>
+	<img class="large-img" src="assets/img/meanface.jpg">
+</div>
+
+<p> Now, let's do some warping to see how my face would look if I were a Danish man, and vice versa.</p>
+<div class="container">
+	<div class="img" style="padding-right: 30px">
+		Warping my facial geometry to a Danish male's:<br><br>
+		<img src="assets/img/metomean.jpg">
+	</div>
+	<div class="img" style="padding-right: 30px">
+		Warping the average Danish face geometry to mine:<br><br>
+		<img src="assets/img/meantome.jpg">
+	</div>
+</div>
+
+<h3>CARICATURES</h3>
+<p> Now that we have the population mean that we calculated in the last part, we can try to exaggerate those features by simply extrapolating. We do this by morphing with ratios that still sum to 1, but include a value > 1. For example, we can morph with the ratios -0.5 and 1.5 to exaggerate the appearance of Danish features in my face. Here are my results:</p>
+<div class="container">
+	<div class="img" style="padding-right: 30px">
+		No warping: <br>
+		<img src="assets/img/morphme.jpg">
+	</div>
+	<div class="img" style="padding-right: 30px">
+		Normal warping of my face into the <br>average Dane geometry: <br>
+		<img src="assets/img/metomean.jpg">
+	</div>
+	<div class="img" style="padding-right: 30px">
+		Extrapolating with value 1.3: <br>
+		<img src="assets/img/cari_1.3.jpg">
+	</div>
+	<div class="img" style="padding-right: 30px">
+		Extrapolating with value 1.6: <br>
+		<img src="assets/img/cari_1.6.jpg">
+	</div>
+</div>
+
+
+
+
+<h3>BELLS & WHISTLES: DID YOU JUST ASSUME MY GENDER?</h3>
+</p> We can do some pretty cool stuff with appearance and geometry warping! I found an image of an 'average Korean male' online:</p>
+<div style="text-align:center">
+	<img src="assets/img/koreanaverageman.jpg">
+</div><br><br>
+
+<p>With this, we can change my gender! Here's what I would look like as a Korean man:</p>
+<div class="container">
+	<div class="img" style="padding-right: 30px">
+		<strong>Morphing both shape and appearance:</strong><br>
+		<img src="assets/img/measmale.jpg">
+	</div>
+	<div class="img" style="padding-right: 30px">
+		<strong>Morphing just shape:</strong><br>
+		<img style="padding-bottom: 50px" src="assets/img/measmaleshape.jpg">
+	</div>
+	<div class="img" style="padding-right: 30px">
+		<strong>Morphing just appearance:</strong><br>
+		<img src="assets/img/overlay.jpg">
+	</div>
+</div>
+
+
+	
+</body>
+</html>
