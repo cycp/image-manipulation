@@ -23,11 +23,3 @@ imname = 'settlers.jpg';
 
 If auto-cropping/auto-contrasting are not needed, I recommend that you comment those lines of code out to make the program as a whole run faster and save time.
 
-## Authors
-
-* **Clara Park** 
-
-## Acknowledgments
-
-* Thank you to all the other students who submitted before me so that I could reference their web pages and see how much information to include.
-
